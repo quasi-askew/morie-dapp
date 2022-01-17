@@ -6,12 +6,33 @@ import {
   Stack,
   Text,
   Button,
-  Icon,
-  IconProps,
   Box,
 } from "@chakra-ui/react";
+import { useQuery } from 'urql';
+
+const MorieQuery = `
+  query {
+		exampleEntities(first: 5) {
+			id
+			count
+			owner
+			approved
+		}
+	}
+`;
 
 export default function Home() {
+
+	const [result, reexecuteQuery] = useQuery({
+    query: MorieQuery,
+  });
+
+	const { data, fetching, error } = result;
+
+	console.log({data})
+	console.log({fetching})
+	console.log({error})
+
   return (
     <div>
       <Head>
