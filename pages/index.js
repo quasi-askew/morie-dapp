@@ -1,8 +1,9 @@
 import Head from "next/head";
 import NextImage from "next/image";
-import { Box, Wrap, WrapItem, Image} from "@chakra-ui/react";
+import { Box, Wrap, WrapItem } from "@chakra-ui/react";
 import { useQuery } from "urql";
 import randomColor from "randomcolor";
+import { withUrqlClient } from "next-urql";
 
 const MorieQuery = `
   query {
@@ -14,7 +15,7 @@ const MorieQuery = `
 	}
 `;
 
-export default function Home() {
+const Home = () => {
   const [result, reexecuteQuery] = useQuery({
     query: MorieQuery,
   });
@@ -71,13 +72,6 @@ export default function Home() {
                         })
                       )}
                     />
-                    {/* <Image
-                      borderRadius="full"
-                      boxSize="50px"
-                      src={token.imageURI}
-                      alt={token.tokenID}
-											fallbackSrc={'https://cryptomories.iwwon.com/images/tetesolo.png'}
-                    /> */}
                   </WrapItem>
                 );
               })}
@@ -86,4 +80,9 @@ export default function Home() {
       </main>
     </div>
   );
-}
+};
+
+
+export default withUrqlClient((_ssrExchange, ctx) => ({
+  url: "https://api.thegraph.com/subgraphs/name/quasi-askew/world-of-iwwon",
+}))(Home);
