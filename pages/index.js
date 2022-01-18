@@ -1,19 +1,11 @@
 import Head from "next/head";
-import { Image } from "@chakra-ui/react";
-import {
-  Flex,
-  Container,
-  Heading,
-  Stack,
-  Text,
-  Box,
-  SimpleGrid
-} from "@chakra-ui/react";
+import Image from "next/image";
+import { Box, Container, Stack, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import { useQuery } from "urql";
 
 const MorieQuery = `
   query {
-		tokens(first: 50) {
+		tokens(first: 100) {
 			id
 			tokenID
 			imageURI
@@ -45,30 +37,37 @@ export default function Home() {
           <Stack
             textAlign={"center"}
             align={"center"}
-            spacing={{ base: 8, md: 10 }}
+            spacing={{ base: 2, md: 6 }}
             py={{ base: 20, md: 28 }}
           >
-            <Heading
-              fontWeight={600}
-              fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
-              lineHeight={"110%"}
+            <Text
+              bgGradient="linear(to-l, #7928CA, #FF0080)"
+              bgClip="text"
+              fontSize="6xl"
+              fontWeight="extrabold"
+              as="h1"
             >
-              test
-            </Heading>
-            <Text color={"gray.500"} maxW={"3xl"}>
+              CryptoMories
+            </Text>
+            <Text color={"gray.900"}>
               &quot;memento mori&quot; is a latin saying that means
               &quot;Remember you die&quot;.
             </Text>
-            <SimpleGrid columns={{base: 2, lg: 4}} spacing={0}>
+            <Wrap>
               {data?.tokens &&
                 data.tokens.map((token) => {
                   return (
-                    <Box boxSize="xs" key={token.tokenID}>
-                      <Image src={token.imageURI} alt="" />
-                    </Box>
+                    <WrapItem key={token.tokenID}>
+                      <Image
+                        height={100}
+                        width={100}
+                        src={token.imageURI}
+                        alt=""
+                      />
+                    </WrapItem>
                   );
                 })}
-            </SimpleGrid>
+            </Wrap>
           </Stack>
         </Container>
       </main>
