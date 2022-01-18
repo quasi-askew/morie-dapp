@@ -2,7 +2,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { createClient, Provider } from "urql";
 
 const client = createClient({
-  url: "https://api.studio.thegraph.com/query/16206/mementomori/v0.0.1",
+  url: "https://api.thegraph.com/subgraphs/name/quasi-askew/world-of-iwwon",
 });
 
 function MyApp({ Component, pageProps }) {

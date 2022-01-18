@@ -1,37 +1,36 @@
 import Head from "next/head";
+import { Image } from "@chakra-ui/react";
 import {
   Flex,
   Container,
   Heading,
   Stack,
   Text,
-  Button,
   Box,
+  SimpleGrid
 } from "@chakra-ui/react";
-import { useQuery } from 'urql';
+import { useQuery } from "urql";
 
 const MorieQuery = `
   query {
-		exampleEntities(first: 5) {
+		tokens(first: 50) {
 			id
-			count
-			owner
-			approved
+			tokenID
+			imageURI
 		}
 	}
 `;
 
 export default function Home() {
-
-	const [result, reexecuteQuery] = useQuery({
+  const [result, reexecuteQuery] = useQuery({
     query: MorieQuery,
   });
 
-	const { data, fetching, error } = result;
+  const { data, fetching, error } = result;
 
-	console.log({data})
-	console.log({fetching})
-	console.log({error})
+  if (!data) {
+    return null;
+  }
 
   return (
     <div>
@@ -54,31 +53,22 @@ export default function Home() {
               fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
               lineHeight={"110%"}
             >
-              cryptomories
+              test
             </Heading>
             <Text color={"gray.500"} maxW={"3xl"}>
               &quot;memento mori&quot; is a latin saying that means
               &quot;Remember you die&quot;.
             </Text>
-            <Stack spacing={6} direction={"row"}>
-              <Button
-                rounded={"full"}
-                px={6}
-                colorScheme={"orange"}
-                bg={"orange.400"}
-                _hover={{ bg: "orange.500" }}
-              >
-                Get started
-              </Button>
-              <Button rounded={"full"} px={6}>
-                Learn more
-              </Button>
-            </Stack>
-            <Flex w={"full"}>
-              <Box>
-                <Text>Image could go here</Text>
-              </Box>
-            </Flex>
+            <SimpleGrid columns={{base: 2, lg: 4}} spacing={0}>
+              {data?.tokens &&
+                data.tokens.map((token) => {
+                  return (
+                    <Box boxSize="xs" key={token.tokenID}>
+                      <Image src={token.imageURI} alt="" />
+                    </Box>
+                  );
+                })}
+            </SimpleGrid>
           </Stack>
         </Container>
       </main>
