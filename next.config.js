@@ -3,7 +3,4 @@ module.exports = {
   images: {
     domains: ["ipfs.io"],
   },
-  experimental: {
-    concurrentFeatures: true,
-  },
 };

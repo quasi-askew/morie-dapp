@@ -47,8 +47,8 @@ const Mories = ({ skip, first }) => {
           return (
             <div key={token.tokenID}>
               <NextImage
-                height={100}
-                width={100}
+                height={75}
+                width={75}
                 src={token.imageURI}
                 alt={token.tokenID}
                 placeholder="blur"
