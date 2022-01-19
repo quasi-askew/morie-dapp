@@ -54,7 +54,7 @@ const Mories = ({ skip, first }) => {
                 placeholder="blur"
                 blurDataURL={rgbDataURL(
                   randomColor({
-                    luminosity: "bright",
+                    luminosity: "light",
                     format: "rgbArray",
                   })
                 )}
