@@ -1,5 +1,4 @@
 import NextImage from "next/image";
-import { WrapItem } from "@chakra-ui/react";
 import randomColor from "randomcolor";
 import MorieQuery from "../utils/MorieQuery";
 import { withUrqlClient, initUrqlClient } from "next-urql";
@@ -46,7 +45,7 @@ const Mories = ({ skip, first }) => {
       {data?.tokens &&
         data.tokens.map((token) => {
           return (
-            <WrapItem key={token.tokenID}>
+            <div key={token.tokenID}>
               <NextImage
                 height={100}
                 width={100}
@@ -55,12 +54,12 @@ const Mories = ({ skip, first }) => {
                 placeholder="blur"
                 blurDataURL={rgbDataURL(
                   randomColor({
-                    luminosity: "light",
+                    luminosity: "bright",
                     format: "rgbArray",
                   })
                 )}
               />
-            </WrapItem>
+            </div>
           );
         })}
     </>
