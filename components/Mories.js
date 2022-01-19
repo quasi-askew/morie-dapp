@@ -1,8 +1,15 @@
 import NextImage from "next/image";
-import { Wrap, WrapItem } from "@chakra-ui/react";
-import { useQuery } from "urql";
+import { WrapItem } from "@chakra-ui/react";
 import randomColor from "randomcolor";
 import MorieQuery from "../utils/MorieQuery";
+import { withUrqlClient, initUrqlClient } from "next-urql";
+import {
+  ssrExchange,
+  dedupExchange,
+  cacheExchange,
+  fetchExchange,
+  useQuery,
+} from "urql";
 
 const Mories = ({ skip, first }) => {
   const [result, reexecuteQuery] = useQuery({
@@ -41,8 +48,8 @@ const Mories = ({ skip, first }) => {
           return (
             <WrapItem key={token.tokenID}>
               <NextImage
-                height={40}
-                width={40}
+                height={100}
+                width={100}
                 src={token.imageURI}
                 alt={token.tokenID}
                 placeholder="blur"
@@ -60,4 +67,29 @@ const Mories = ({ skip, first }) => {
   );
 };
 
-export default Mories;
+export async function getStaticProps(ctx) {
+  const ssrCache = ssrExchange({ isClient: false });
+  const client = initUrqlClient({
+    url: "https://api.thegraph.com/subgraphs/name/quasi-askew/world-of-iwwon",
+    exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
+  });
+
+  // This query is used to populate the cache for the query
+  // used on this page.
+  await client.query(MorieQuery).toPromise();
+
+  return {
+    props: {
+      // urqlState is a keyword here so withUrqlClient can pick it up.
+      urqlState: ssrCache.extractData(),
+    },
+    revalidate: 600,
+  };
+}
+
+export default withUrqlClient(
+  (ssr) => ({
+    url: "https://api.thegraph.com/subgraphs/name/quasi-askew/world-of-iwwon",
+  }),
+  { ssr: false } // Important so we don't wrap our component in getInitialProps
+)(Mories);

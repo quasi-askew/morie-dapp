@@ -1,9 +1,23 @@
+import dynamic from "next/dynamic";
+import { lazy, Suspense, useEffect, useState } from "react";
 import Head from "next/head";
 import { Box, Wrap } from "@chakra-ui/react";
-import { withUrqlClient } from "next-urql";
-import Mories from "../components/Mories";
+const Mories = lazy(() => import('../components/Mories'))
+
 
 const Home = () => {
+  const [showChild, setShowChild] = useState(false);
+
+  // Wait until after client-side hydration to show
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
+
+  if (!showChild) {
+    // You can show some kind of placeholder UI here
+    return null;
+  }
+
   return (
     <div>
       <Head>
@@ -16,26 +30,38 @@ const Home = () => {
       </Head>
 
       <main>
-        <Box py={8}>
+        <Box>
           <Wrap spacing={0} justify={"center"}>
-            <Mories skip={0} first={100} />
-            <Mories skip={100} first={100} />
-            <Mories skip={200} first={100} />
-            <Mories skip={300} first={100} />
-            <Mories skip={400} first={100} />
-            <Mories skip={500} first={100} />
-            <Mories skip={600} first={100} />
-            <Mories skip={700} first={100} />
-            <Mories skip={800} first={100} />
-            <Mories skip={900} first={100} />
-            <Mories skip={1000} first={100} />
-            <Mories skip={1100} first={100} />
-            <Mories skip={1200} first={100} />
-            <Mories skip={1300} first={100} />
-            <Mories skip={1400} first={100} />
-            <Mories skip={1500} first={100} />
-            <Mories skip={1600} first={100} />
-            <Mories skip={1700} first={100} />
+            <Suspense>
+              <Mories skip={0} first={1000} />
+            </Suspense>
+            <Suspense>
+              <Mories skip={1000} first={1000} />
+            </Suspense>
+            <Suspense>
+              <Mories skip={2000} first={1000} />
+            </Suspense>
+            <Suspense>
+              <Mories skip={3000} first={1000} />
+            </Suspense>
+            <Suspense>
+              <Mories skip={4000} first={1000} />
+            </Suspense>
+            <Suspense>
+              <Mories skip={5000} first={1000} />
+            </Suspense>
+            <Suspense>
+              <Mories skip={6000} first={1000} />
+            </Suspense>
+            <Suspense>
+              <Mories skip={7000} first={1000} />
+            </Suspense>
+            <Suspense>
+              <Mories skip={8000} first={1000} />
+            </Suspense>
+            <Suspense>
+              <Mories skip={9000} first={1000} />
+            </Suspense>
           </Wrap>
         </Box>
       </main>
@@ -43,6 +69,4 @@ const Home = () => {
   );
 };
 
-export default withUrqlClient((_ssrExchange, ctx) => ({
-  url: "https://api.thegraph.com/subgraphs/name/quasi-askew/world-of-iwwon",
-}))(Home);
+export default Home;
