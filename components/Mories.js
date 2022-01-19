@@ -1,7 +1,7 @@
 import NextImage from "next/image";
+import { WrapItem } from "@chakra-ui/react";
 
 const Mories = ({ mories }) => {
-
   if (!mories) {
     return null;
   }
@@ -11,13 +11,14 @@ const Mories = ({ mories }) => {
       {mories &&
         mories.map((token) => {
           return (
-            <NextImage
-              key={token.tokenID}
-              height={40}
-              width={40}
-              src={token.imageURI}
-              alt={token.tokenID}
-            />
+            <WrapItem key={token.tokenID}>
+              <NextImage
+                height={50}
+                width={50}
+                src={token.imageURI}
+                alt={token.tokenID}
+              />
+            </WrapItem>
           );
         })}
     </>

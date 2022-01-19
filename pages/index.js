@@ -2,6 +2,7 @@ import Head from "next/head";
 import Mories from "../components/Mories";
 import { gql } from "@apollo/client";
 import client from "../apollo-client";
+import { Box, Wrap } from "@chakra-ui/react";
 
 const Home = ({
   morieWave1,
@@ -40,10 +41,11 @@ const Home = ({
       </Head>
 
       <main>
-        <div
-        >
-          <Mories mories={allMories} />
-        </div>
+        <Box>
+          <Wrap justify={"center"} spacing={0}>
+            <Mories mories={allMories} />
+          </Wrap>
+        </Box>
       </main>
     </div>
   );
